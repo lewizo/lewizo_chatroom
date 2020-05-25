@@ -6,7 +6,6 @@ socket tcp
 """
 from socket import *
 from select import select
-import re
 import os
 
 s=socket()
@@ -59,17 +58,3 @@ while True:
                 # for file in files:
                 #     msg=msg+file+" "
                 r.send(msg.encode())
-            if data[0]=="W" and data[1]==" ":
-                word = data.split(" ", 1)[1]
-                f=open("dict.txt",'r')
-                for line in f:
-                    if word==line.split(" ",1)[0]:
-                        mean=re.split(" +",line,1)[1]
-                        r.send(mean.encode())
-                        break
-                f.close()
-                noexist="不存在该单词"
-                r.send(noexist.encode())
-                rlist.remove(r)
-                r.close()
-                print("等待客户端连接.....")
