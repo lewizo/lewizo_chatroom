@@ -8,9 +8,9 @@ from socket import *
 from select import select
 import os
 
-s=socket()
+s = socket()
 
-s.bind(('0.0.0.0',2048))
+s.bind(('0.0.0.0', 2048))
 s.listen(6)
 
 rlist = [s]
@@ -26,34 +26,34 @@ while True:
             print(addr, "已连接")
             rlist.append(connfd)
         else:
-            data=r.recv(1024).decode()
-            if data[0]=="P" and data[1]==" ":
+            data = r.recv(1024).decode()
+            if data[0] == "P" and data[1] == " ":
                 name = data.split(" ", 1)[1]
                 f = open('/home/lewizo/PycharmProjects/chatroom/server/' + name, 'wb')
                 while True:
-                    data=r.recv(1024)
-                    if data=="# ".encode():
+                    data = r.recv(1024)
+                    if data == "# ".encode():
                         f.close()
                         rlist.remove(r)
                         r.close()
                         break
                     f.write(data)
-            if data[0]=="G" and data[1]==" ":
+            if data[0] == "G" and data[1] == " ":
                 name = data.split(" ", 1)[1]
                 print(name)
                 f = open('/home/lewizo/PycharmProjects/chatroom/server/' + name, 'rb')
                 while True:
-                    data=f.read(1024)
+                    data = f.read(1024)
                     if not data:
                         r.send("上传完毕".encode())
                         rlist.remove(r)
                         r.close()
                         break
                     r.send(data)
-            if data[0]=="L" and data[1]==" ":
-                msg="文件:"
-                count=0
-                for name,sub_folds,files in os.walk("server"):
+            if data[0] == "L" and data[1] == " ":
+                msg = "文件:"
+                count = 0
+                for name, sub_folds, files in os.walk("server"):
                     print(files)
                 # for file in files:
                 #     msg=msg+file+" "
